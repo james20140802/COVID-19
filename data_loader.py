@@ -7,6 +7,9 @@ from __future__ import print_function
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
+
+import os.path
 
 
 def load_train_data():
@@ -18,6 +21,22 @@ def load_train_data():
 def univariate_data(dataset, start_index, end_index, history_size, target_size):
     data = []
     labels = []
+    if os.path.isfile("mean_std.txt"):
+        f = open('mean_std.txt', 'rb')
+        mean_std = pickle.load(f)
+        f.close()
+        mean = mean_std["mean"]
+        std = mean_std["std"]
+    else:
+        mean = dataset.mean()
+        std = dataset.std()
+
+    dataset = (dataset - mean) / std
+
+    mean_std = {"mean": mean, "std": std}
+    file = open('mean_std.txt', 'wb')
+    pickle.dump(mean_std, file)
+    file.close()
 
     start_index = start_index + history_size
     if end_index is None:
