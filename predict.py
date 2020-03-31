@@ -5,6 +5,8 @@ from __future__ import division
 from __future__ import print_function
 
 import pickle
+import numpy as np
+import pandas as pd
 
 from rnn_predictor import RNNPredictor
 
@@ -23,7 +25,23 @@ def predict(x):
 
 
 if __name__ == "__main__":
-    data = [[[418045], [467653], [529591], [593291], [660706]]]
+    data = np.array([[467653], [529591], [593291], [660706], [720117]])
+    date = 0
+    history = []
 
-    print(predict(data))
+    while True:
+        last_data = data[-1]
+        prediction = predict(np.float32([data])).numpy()[0][0]
 
+        tmp_data = data[1:]
+        data = np.append(tmp_data, [[prediction]], axis=0)
+
+        date += 1
+        print('Day: {:d} Expected Confirmed Cases: {:f}'.format(date, prediction))
+        history.append(prediction)
+
+        if (prediction - last_data) < 10:
+            break
+
+    data_frame = pd.DataFrame(data)
+    data_frame.to_csv("history.csv", header=False, index=False)
