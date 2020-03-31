@@ -66,6 +66,6 @@ for epoch in epochs:
 
     print("Epoch: {:d} Loss: {:f} Validation Loss: {:f}".format((epoch+1), epoch_loss_avg.result(), val_loss))
 
-    if same_loss_count > 50:
+    if same_loss_count > 1000:
         print("End the training. Best Loss: {:f}.".format(best_loss))
         break
