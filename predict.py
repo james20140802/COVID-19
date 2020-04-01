@@ -25,7 +25,7 @@ def predict(x):
 
 
 if __name__ == "__main__":
-    data = np.array([[467653], [529591], [593291], [660706], [720117]])
+    data = np.array([[593291], [660706], [720117], [782365], [857487]])
     date = 0
     history = []
 
@@ -40,7 +40,7 @@ if __name__ == "__main__":
         print('Day: {:d} Expected Confirmed Cases: {:f}'.format(date, prediction))
         history.append(prediction)
 
-        if (prediction - last_data) < 10:
+        if prediction <= last_data:
             break
 
     data_frame = pd.DataFrame(data)
